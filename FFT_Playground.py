@@ -1,0 +1,6 @@
+n = np.full((2**8), 0.5)
+fftn = np.fft.fft(n)
+ifftn = np.fft.ifft(fftn)
+print(n)
+print(fftn)
+print(ifftn)
