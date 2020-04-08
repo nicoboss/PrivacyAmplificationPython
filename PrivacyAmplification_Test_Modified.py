@@ -12,7 +12,7 @@ class Toeplitz:
 
 	@classmethod
 	def permutate(cls, key_bit_string: np.ndarray):
-		vertical = np.array([1, 0, 1, 0, 1])
+		vertical = np.array([1, 1, 1, 0, 1])
 		horizontal_ganz = np.array([1, 1, 1, 1, 0, 1, 1])
 		horizontal = horizontal_ganz[:-len(vertical)]
 		# ceil to power of two
@@ -21,7 +21,7 @@ class Toeplitz:
 		print(toeplitz_seed_filler_len)
 		toeplitz_seed = np.hstack((vertical, np.zeros(toeplitz_seed_filler_len,), horizontal[::-1][:-1])).astype(np.int)
 		padded_key = np.hstack((key_bit_string, np.zeros(desired_length - key_bit_string.size, ))).astype(np.int)
-		key_bit_string = padded_key[:len(horizontal)]
+		key_start = np.hstack((padded_key[:len(horizontal)], np.zeros(desired_length - len(horizontal), ))).astype(np.int)
 		key_rest = np.hstack((padded_key[len(horizontal):], np.zeros(desired_length - (desired_length - len(horizontal)), ))).astype(np.int)
 
 		print("desired_length:", desired_length)
@@ -29,12 +29,12 @@ class Toeplitz:
 		print("vertical:\n", vertical)
 		print("horizontal:\n", horizontal)
 		print("toeplitz_seed:\n", toeplitz_seed)
-		print("padded_key:\n", padded_key)
+		print("key_start:\n", key_start)
 		print("fft(toeplitz_seed):\n", np.fft.fft(toeplitz_seed))
-		print("fft(padded_key):\n", np.fft.fft(padded_key))
-		print("fft(toeplitz_seed)*fft(padded_key):\n", np.fft.fft(toeplitz_seed) * np.fft.fft(padded_key))
-		print("np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(padded_key)):\n", np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(padded_key)))
-		permutated_key = np.around(np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(padded_key)).real).astype(np.int) % 2
+		print("fft(key_start):\n", np.fft.fft(key_start))
+		print("fft(toeplitz_seed)*fft(key_start):\n", np.fft.fft(toeplitz_seed) * np.fft.fft(key_start))
+		print("np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)):\n", np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)))
+		permutated_key = np.around(np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)).real).astype(np.int) % 2
 		print("permutated_key_raw:\n", permutated_key)
 		print("key_rest:", key_rest)
 		permutated_key ^= key_rest
@@ -53,8 +53,8 @@ def generate_key_bit_string(length):
 # So lange wie horizontal_ganz
 key = generate_key_bit_string(5)
 key[0]=1
-key[1]=1
-key[2]=1
+key[1]=0
+key[2]=0
 key[3]=1
 key[4]=1
 print('Key: {}, size: {}'.format(key, key.size))
