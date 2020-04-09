@@ -1,8 +1,8 @@
 import numpy as np
 
-vertical = np.array([1,1,1,0])
-horizontal = np.array([1,0,0,0]) #Gekürzt Reversed-1
-key = np.array([1,1,1,1,1,1,1,0,1])
+vertical = np.array([1])
+horizontal = np.array([0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0])
+key = np.array([0, 1, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 0, 0])
 r = np.hstack((horizontal, vertical)).astype(np.int)
 a = np.zeros((len(vertical), len(horizontal)+1))
 
