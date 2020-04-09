@@ -12,9 +12,9 @@ class Toeplitz:
 
 	@classmethod
 	def permutate(cls):
-		vertical = np.array([1,0,0,1,1,0])
-		horizontal = np.array([1,0,0,0,1,1,0,1,0,1]) #Gekürzt Reversed-1
-		key = np.array([1,1,0,0,1,0,1,1,0,1,1,1,1,0,0,1,1])
+		vertical = np.array([1,1,1,0,0,1])
+		horizontal = np.array([1,0,0,0,0,0,0,0,0,1]) #Gekürzt Reversed-1
+		key = np.array([1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1])
 		# ceil to power of two
 		desired_length = len(horizontal) + len(vertical)
 		toeplitz_seed_filler_len = desired_length - vertical.size - horizontal.size
@@ -39,8 +39,7 @@ class Toeplitz:
 		print("key_rest:", key_rest)
 		permutated_key ^= key_rest
 		print("permutated_key:\n", permutated_key)
-
-		return permutated_key
+		return permutated_key[:len(vertical)]
 		
 def generate_key_bit_string(length):
 	return np.zeros(length) #np.random.randint(0, size=(length,))

@@ -1,8 +1,8 @@
 import numpy as np
 
-vertical = np.array([1,0,0,1,1,0])
-horizontal = np.array([1,0,0,0,1,1,0,1,0,1]) #Gekürzt Reversed-1
-key = np.array([1,1,0,0,1,0,1,1,0,1,1,1,1,0,0,1,1])
+vertical = np.array([1,1,1,0,0,1])
+horizontal = np.array([1,0,0,0,0,0,0,0,0,1]) #Gekürzt Reversed-1
+key = np.array([1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1])
 r = np.hstack((horizontal, vertical)).astype(np.int)
 a = np.zeros((len(vertical), len(horizontal)+1))
 
@@ -21,4 +21,4 @@ print("key_start:", key_start)
 print("key_rest:", key_rest)
 preXOR = (a.dot(key_start).astype(np.int) % 2)
 print("preXOR:", preXOR)
-print(preXOR ^ key_rest)
+print("Amplificated Key:", preXOR ^ key_rest)
