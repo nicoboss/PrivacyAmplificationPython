@@ -11,25 +11,25 @@ class Toeplitz:
 	NEW_KEY_LENGTH = 0;
 
 	@classmethod
-	def permutate(cls, key_bit_string: np.ndarray):
-		vertical = np.array([1, 1, 1, 0, 1])
-		horizontal_ganz = np.array([1, 1, 1, 1, 0, 1, 1])
-		horizontal = horizontal_ganz[:-len(vertical)]
+	def permutate(cls):
+		vertical = np.array([1,0,0,1,1,0])
+		horizontal = np.array([1,0,0,0,1,1,0,1,0,1]) #Gekürzt Reversed-1
+		key = np.array([1,1,0,0,1,0,1,1,0,1,1,1,1,0,0,1,1])
 		# ceil to power of two
-		desired_length = 1 << (max(len(horizontal), len(vertical))*2 -1).bit_length()
-		toeplitz_seed_filler_len = desired_length - vertical.size - horizontal[::-1][:-1].size
+		desired_length = len(horizontal) + len(vertical)
+		toeplitz_seed_filler_len = desired_length - vertical.size - horizontal.size
 		print(toeplitz_seed_filler_len)
-		toeplitz_seed = np.hstack((vertical, np.zeros(toeplitz_seed_filler_len,), horizontal[::-1][:-1])).astype(np.int)
-		padded_key = np.hstack((key_bit_string, np.zeros(desired_length - key_bit_string.size, ))).astype(np.int)
-		key_start = np.hstack((padded_key[:len(horizontal)], np.zeros(desired_length - len(horizontal), ))).astype(np.int)
-		key_rest = np.hstack((padded_key[len(horizontal):], np.zeros(desired_length - (desired_length - len(horizontal)), ))).astype(np.int)
+		toeplitz_seed = np.hstack((vertical, horizontal)).astype(np.int)
+		key_start = np.hstack((key[:len(horizontal)+1], np.zeros(desired_length-len(horizontal)-1, ))).astype(np.int)
+		key_rest = np.hstack((key[len(horizontal)+1:], np.zeros(desired_length-(desired_length-len(horizontal)), ))).astype(np.int)
 
 		print("desired_length:", desired_length)
-		print("horizontal[::-1][:-1]:", horizontal[::-1][:-1])
+		print("horizontal:", horizontal)
 		print("vertical:\n", vertical)
 		print("horizontal:\n", horizontal)
 		print("toeplitz_seed:\n", toeplitz_seed)
 		print("key_start:\n", key_start)
+		print("key_rest:\n", key_rest)
 		print("fft(toeplitz_seed):\n", np.fft.fft(toeplitz_seed))
 		print("fft(key_start):\n", np.fft.fft(key_start))
 		print("fft(toeplitz_seed)*fft(key_start):\n", np.fft.fft(toeplitz_seed) * np.fft.fft(key_start))
@@ -49,18 +49,10 @@ def generate_key_bit_string(length):
 
 #Toeplitz.MATRIX_SEED = generate_key_bit_string(2**(size+2))
 #Toeplitz.NEW_KEY_LENGTH = 2**size
-
 # So lange wie horizontal_ganz
-key = generate_key_bit_string(5)
-key[0]=1
-key[1]=0
-key[2]=0
-key[3]=1
-key[4]=1
-print('Key: {}, size: {}'.format(key, key.size))
-
+# key = generate_key_bit_string(5)
 start = time.time()
-amp_key = Toeplitz.permutate(key)
+amp_key = Toeplitz.permutate()
 end = time.time()
 print('Amplificated Key: {}, size: {}'.format(amp_key, amp_key.size))
 print('{:5.3f}s'.format(end-start))
