@@ -75,9 +75,13 @@ def generate_key_bit_string(length):
 #key = generate_key_bit_string(5)
 start = time.time()
 amp_key = Toeplitz.permutate()
-out_arr = np.packbits(amp_key)
+out_arr_len = len(amp_key)//8
+out_arr = np.zeros(out_arr_len)
+for i in range(out_arr_len):
+	out_arr[i] = (amp_key[i*8] << 7) | (amp_key[i*8 + 1] << 6) | (amp_key[i*8 + 2] << 5) | (amp_key[i*8 + 3] << 4) | (amp_key[i*8 + 4] << 3) | (amp_key[i*8 + 5] << 2) | (amp_key[i*8 + 6] << 1) | (amp_key[i*8 + 7])
+	if i%1000 == 0:
+		print(i, "/", out_arr_len)
 end = time.time()
-print('Amplificated Key: {}, size: {}'.format(amp_key, amp_key.size))
 print('{:5.3f}s'.format(end-start))
 with open('ampout_python.bin', 'wb') as f:
 	#Completes but never returns
