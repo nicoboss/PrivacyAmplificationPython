@@ -2,8 +2,6 @@ import os
 import configparser
 import time
 import numpy as np
-from scipy.sparse import spdiags
-from scipy.sparse import csc_matrix
 np.set_printoptions(threshold=np.inf)
 
 class Toeplitz:
@@ -12,17 +10,41 @@ class Toeplitz:
 
 	@classmethod
 	def permutate(cls):
-		n = 2**10
+		n = 2**7 #128
 		np.set_printoptions(suppress=True)
 		matrix_seed_file = np.fromfile("toeplitz_seed.bin", dtype='<i4')
 		key_file = np.fromfile("keyfile.bin", dtype='<i4')
 		toeplitz_seed = (((matrix_seed_file[:,None] & (0x80000000 >> np.arange(32)))) > 0).astype(int).flatten()[:n]
 		key = (((key_file[:,None] & (0x80000000 >> np.arange(32)))) > 0).astype(int).flatten()[:n]
+		print(len(matrix_seed_file))
+		print(len(key_file))
+		print(len(toeplitz_seed))
+		print(len(key))
 		print("toeplitz_seed:", toeplitz_seed[:100])
 		print("key:", key[:100])
-		vertical_len = n//4 + n//8;
-		horizontal_len = n//2 + n//8;
+		vertical_len = n//4 + n//8 #(3/8)*n
+		horizontal_len = n//2 + n//8 #(5/8)*n
 		desired_length = horizontal_len + vertical_len
+		print("vertical_len:", vertical_len)
+		print("horizontal_len:", horizontal_len)
+		print("desired_length:", desired_length)
+
+		Grafikkarte = 2**4 #16=2B
+		B = N = M = Grafikkarte//2 #Seitenlänge eines Chunks
+		anz_horizontale_chunks = horizontal_len//N
+		anz_vertikale_chunks = vertical_len//M
+
+		for hc in range(0, anz_horizontale_chunks):
+			print(hc)
+			key_start_chunk = np.hstack((key[hc*N:hc*N+N], np.zeros(Grafikkarte-N, )))
+			toeplitz_seed_chunk = toeplitz_seed[hc*Grafikkarte:hc*Grafikkarte+Grafikkarte]
+			print(len(key_start_chunk))
+			print(key_start_chunk)
+			print(len(toeplitz_seed_chunk))
+			print(toeplitz_seed_chunk)
+
+		
+		return
 		key_start = np.hstack((key[:horizontal_len+1], np.zeros(desired_length-horizontal_len-1, )))
 		key_rest = np.hstack((key[horizontal_len+1:], np.zeros(horizontal_len+1), ))
 		fft_toeplitz_seed = np.fft.fft(toeplitz_seed)
