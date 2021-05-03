@@ -1,8 +1,17 @@
 import numpy as np
 
-vertical = np.array([0, 1, 0, 0, 1, 1, 1, 1])
-horizontal = np.array([1, 1, 0, 1, 1, 0, 0])
-key = np.array([0, 1, 0, 1, 0, 1, 1, 0, 0])
+#Generate T vertical then horizonal (15 Elements):
+#vertical = np.array([1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0])
+#horizontal = np.array([1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1])
+#key = np.array([1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1])
+
+#Changes:
+#First vertical element to last (first) horizonal element
+#Appended zero at end of vertical
+#Insearted 0 at beginning of key
+vertical = np.array([1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0])
+horizontal = np.array([1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1])
+key = np.array([0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1])
 r = np.hstack((horizontal, vertical)).astype(int)
 a = np.zeros((len(vertical), len(horizontal)+1))
 
