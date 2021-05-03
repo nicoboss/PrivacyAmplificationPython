@@ -13,6 +13,22 @@ key = np.array([1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0
 vertical = np.array([1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0])
 horizontal = np.array([1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1])
 key = np.array([0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1])
+
+
+vertical = np.array([1, 1, 0, 0, 1, 1, 0, 0])
+#vertical = np.array([0, 1, 1, 0, 0, 0, 1, 0])
+#vertical = np.array([0, 0, 1, 0, 0, 1, 0, 0])
+horizontal = np.array([0, 1, 1, 0, 0, 0, 1, 1])
+#horizontal = np.array([1, 0, 1, 1, 0, 1, 1, 1])
+#horizontal = np.array([1, 1, 0, 0, 1, 1, 0, 0])
+key = np.array([0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+#key = np.array([0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0])
+#amp_key = permutate(v1, h1, k1)
+#amp_key = permutate(v2, h2, k1)
+#amp_key = permutate(v3, h3, k2)
+
+
+
 r = np.hstack((horizontal, vertical)).astype(int)
 a = np.zeros((len(vertical), len(horizontal)+1))
 
