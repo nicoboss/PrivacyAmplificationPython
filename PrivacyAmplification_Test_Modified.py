@@ -19,9 +19,9 @@ class Toeplitz:
 		desired_length = len(horizontal) + len(vertical)
 		toeplitz_seed_filler_len = desired_length - vertical.size - horizontal.size
 		print(toeplitz_seed_filler_len)
-		toeplitz_seed = np.hstack((vertical, horizontal)).astype(np.int)
-		key_start = np.hstack((key[:len(horizontal)+1], np.zeros(desired_length-len(horizontal)-1, ))).astype(np.int)
-		key_rest = np.hstack((key[len(horizontal)+1:], np.zeros(desired_length-(desired_length-len(horizontal)), ))).astype(np.int)
+		toeplitz_seed = np.hstack((vertical, horizontal)).astype(int)
+		key_start = np.hstack((key[:len(horizontal)+1], np.zeros(desired_length-len(horizontal)-1, ))).astype(int)
+		key_rest = np.hstack((key[len(horizontal)+1:], np.zeros(desired_length-(desired_length-len(horizontal)), ))).astype(int)
 
 		print("desired_length:", desired_length)
 		print("horizontal:", horizontal)
@@ -34,7 +34,7 @@ class Toeplitz:
 		print("fft(key_start):\n", np.fft.fft(key_start))
 		print("fft(toeplitz_seed)*fft(key_start):\n", np.fft.fft(toeplitz_seed) * np.fft.fft(key_start))
 		print("np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)):\n", np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)))
-		permutated_key = np.around(np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)).real).astype(np.int) % 2
+		permutated_key = np.around(np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)).real).astype(int) % 2
 		print("permutated_key_raw:\n", permutated_key)
 		print("key_rest:", key_rest)
 		permutated_key ^= key_rest

@@ -19,8 +19,8 @@ class Toeplitz:
 		desired_length = 1 << (key_bit_string.size*2 -1).bit_length()
 
 		toeplitz_seed_filler_len = desired_length - vertical.size - horizontal[::-1][:-1].size
-		toeplitz_seed = np.hstack((vertical, np.zeros(toeplitz_seed_filler_len,), horizontal[::-1][:-1])).astype(np.int)
-		padded_key = np.hstack((key_bit_string, np.zeros(desired_length - key_bit_string.size, ))).astype(np.int)
+		toeplitz_seed = np.hstack((vertical, np.zeros(toeplitz_seed_filler_len,), horizontal[::-1][:-1])).astype(int)
+		padded_key = np.hstack((key_bit_string, np.zeros(desired_length - key_bit_string.size, ))).astype(int)
 
 		print("desired_length:", desired_length)
 		print("horizontal[::-1][:-1]:", horizontal[::-1][:-1])
@@ -32,7 +32,7 @@ class Toeplitz:
 		print("fft(padded_key):\n", np.fft.fft(padded_key))
 		print("fft(toeplitz_seed)*fft(padded_key):\n", np.fft.fft(toeplitz_seed) * np.fft.fft(padded_key))
 		print("np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(padded_key)):\n", np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(padded_key)))
-		permutated_key = np.around(np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(padded_key)).real).astype(np.int) % 2
+		permutated_key = np.around(np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(padded_key)).real).astype(int) % 2
 		print("permutated_key:\n", permutated_key)
 
 		return permutated_key

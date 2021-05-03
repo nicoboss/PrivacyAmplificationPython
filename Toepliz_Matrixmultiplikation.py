@@ -16,4 +16,4 @@ a = np.array(
 )
 b = np.array([1, 1, 1, 1, 1, 0, 0])
 
-print(a.dot(b).astype(np.int) % 2)
+print(a.dot(b).astype(int) % 2)

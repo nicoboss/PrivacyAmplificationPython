@@ -4,7 +4,7 @@ m = [1, 2, 3, 4, 5]
 n = [7, 7, 3, 3, 2, 1, 3]
 k = [7, 7, 7]
 
-padded_key = np.hstack((k, np.zeros(len(m)*len(n) - len(k) ))).astype(np.int)
+padded_key = np.hstack((k, np.zeros(len(m)*len(n) - len(k) ))).astype(int)
 
 r = n[::-1][:-1]+m
 #cudaMalloc(&ptr, size);

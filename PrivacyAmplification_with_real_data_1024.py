@@ -41,8 +41,8 @@ class Toeplitz:
 			fft_key_start[0] = 0+0j
 			mul1 = fft_toeplitz_seed*fft_key_start
 			invOut = np.fft.ifft(mul1).real+correction
-			permutated_key = np.around(invOut).astype(np.int) % 2
-			key_rest_int = np.around(key_rest).astype(np.int) % 2
+			permutated_key = np.around(invOut).astype(int) % 2
+			key_rest_int = np.around(key_rest).astype(int) % 2
 			
 			#print("correction:", correction)
 			#print("desired_length:", desired_length)

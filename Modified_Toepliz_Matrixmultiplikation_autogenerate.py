@@ -14,11 +14,11 @@ for spalte in range(len(horizontal)+1):
         
 
 desired_length = len(horizontal) + len(vertical)
-key_start = key[:len(horizontal)+1].astype(np.int)
-key_rest = key[len(horizontal)+1:].astype(np.int)
+key_start = key[:len(horizontal)+1].astype(int)
+key_rest = key[len(horizontal)+1:].astype(int)
 print(a)
 print("key_start:", key_start)
 print("key_rest:", key_rest)
-preXOR = (a.dot(key_start).astype(np.int) % 2)
+preXOR = (a.dot(key_start).astype(int) % 2)
 print("preXOR:", preXOR)
 print("Amplificated Key:", preXOR ^ key_rest)
