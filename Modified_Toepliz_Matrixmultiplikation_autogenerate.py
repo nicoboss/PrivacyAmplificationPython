@@ -1,32 +1,37 @@
 import numpy as np
 
 #Generate T vertical then horizonal (15 Elements):
-vertical = np.array([1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0])
-horizontal = np.array([1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1])
-key = np.array([1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1])
-
+#vertical = np.array([1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0])
+#horizontal = np.array([1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1])
+#key = np.array([1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1])
 
 #Changes:
 #First vertical element to last (first) horizonal element
 #Appended zero at end of vertical
 #Insearted 0 at beginning of key
-vertical = np.array([1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0])
-horizontal = np.array([1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1])
-key = np.array([0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1])
+#vertical = np.array([1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0])
+#horizontal = np.array([1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1])
+#key = np.array([0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1])
 
 
-vertical = np.array([1, 1, 0, 0, 1, 1, 0, 0])
+#vertical = np.array([1, 1, 0, 0, 1, 1, 0, 0])
 #vertical = np.array([0, 1, 1, 0, 0, 0, 1, 0])
 #vertical = np.array([0, 0, 1, 0, 0, 1, 0, 0])
-horizontal = np.array([0, 1, 1, 0, 0, 0, 1, 1])
+#horizontal = np.array([0, 1, 1, 0, 0, 0, 1, 1])
 #horizontal = np.array([1, 0, 1, 1, 0, 1, 1, 1])
 #horizontal = np.array([1, 1, 0, 0, 1, 1, 0, 0])
 #key = np.array([0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-key = np.array([0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0])
+#key = np.array([0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0])
 #amp_key = permutate(v1, h1, k1)
 #amp_key = permutate(v2, h2, k2)
 #amp_key = permutate(v3, h3, k1)
 #amp_key = permutate(v1, h1, k2)
+
+
+
+vertical = np.array([1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1])
+horizontal = np.array([1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0][::-1])
+key = np.array([1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1])
 
 
 r = np.hstack((horizontal, vertical)).astype(int)
