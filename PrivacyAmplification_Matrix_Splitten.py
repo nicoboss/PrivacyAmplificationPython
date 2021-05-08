@@ -25,7 +25,6 @@ from scipy.sparse import csc_matrix
 np.set_printoptions(threshold=np.inf)
 
 def permutate(toeplitz_seed, key_start):
-	print("desired_length:", desired_length)
 	print("toeplitz_seed:\n", toeplitz_seed)
 	print("key_start:\n", key_start)
 	print("fft(toeplitz_seed):\n", np.fft.fft(toeplitz_seed))
@@ -54,10 +53,19 @@ start = time.time()
 
 
 #toeplitz_seed = np.hstack((vertical, horizontal)).astype(int)
-toeplitz_seed = [1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1]
-desired_length = len(toeplitz_seed)
+horizontal_len = 16
+toeplitz_seed = np.array([1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0]) # HL + VL
+toeplitz_seed_length = len(toeplitz_seed)
+key = np.array([1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1])
+key_length = horizontal_len
 
-key = np.array([0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1])
+local_seed = np.hstack((toeplitz_seed[8:16], toeplitz_seed[0:8])).astype(int)
+local_key = key[key_length-8:key_length]
+local_key_padded = np.hstack((np.zeros(1), local_key, np.zeros(7))).astype(int)
+print(local_seed)
+print(local_key_padded)
+amp_key = permutate(local_seed, local_key_padded)
+exit(1)
 
 #vertical = np.array([1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0])
 #v1 = np.array([1, 1, 0, 0, 1, 1, 0, 0])
@@ -74,7 +82,7 @@ key = np.array([0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1
 #amp_key = permutate(v2, h2, k1)
 #amp_key = permutate(v3, h3, k2)
 
-key_start = np.hstack((key[:16+1], np.zeros(desired_length-16-1, ))).astype(int)
+key_start = np.hstack((key[:16+1], np.zeros(toeplitz_seed_length-16-1, ))).astype(int)
 amp_key = permutate(toeplitz_seed, key_start)
 
 end = time.time()
