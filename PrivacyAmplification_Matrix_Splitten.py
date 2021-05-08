@@ -33,7 +33,7 @@ def permutate(toeplitz_seed, key_start):
 	print("np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)):\n", np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)))
 	permutated_key = np.around(np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)).real).astype(int) % 2
 	print("permutated_key_raw:\n", permutated_key)
-	return permutated_key[:16]
+	return permutated_key[:8]
 		
 start = time.time()
 
@@ -59,26 +59,39 @@ toeplitz_seed_length = len(toeplitz_seed)
 key = np.array([1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1])
 key_length = horizontal_len
 
-local_seed = np.hstack((toeplitz_seed[16:24], toeplitz_seed[8:16])).astype(int)
-local_key = key[0:8]
-local_key_padded = np.hstack((np.zeros(1), local_key, np.zeros(7))).astype(int)
-print(local_seed)
-print(local_key_padded)
-amp_key_T1 = permutate(local_seed, local_key_padded)
-
 local_seed = np.hstack((toeplitz_seed[8:16], toeplitz_seed[0:8])).astype(int)
-local_key = key[key_length-8:key_length]
-local_key_padded = np.hstack((np.zeros(1), local_key, np.zeros(7))).astype(int)
 print(local_seed)
+local_key_padded = np.hstack((np.zeros(1), key[key_length-8:key_length], np.zeros(7))).astype(int)
 print(local_key_padded)
 amp_key_T2 = permutate(local_seed, local_key_padded)
 
-local_seed = np.hstack((toeplitz_seed[24:toeplitz_seed_length], toeplitz_seed[16:24])).astype(int)
-local_key = key[0:8]
-local_key_padded = np.hstack((np.zeros(1), local_key, np.zeros(7))).astype(int)
+
+local_seed = np.hstack((toeplitz_seed[16:24], toeplitz_seed[8:16])).astype(int)
 print(local_seed)
+
+local_key_padded = np.hstack((np.zeros(1), key[0:8], np.zeros(7))).astype(int)
+print(local_key_padded)
+amp_key_T1 = permutate(local_seed, local_key_padded)
+
+local_key_padded = np.hstack((np.zeros(1), key[key_length-8:key_length], np.zeros(7))).astype(int)
+print(local_key_padded)
+amp_key_T4 = permutate(local_seed, local_key_padded)
+
+
+local_seed = np.hstack((toeplitz_seed[24:toeplitz_seed_length], toeplitz_seed[16:24])).astype(int)
+print(local_seed)
+local_key_padded = np.hstack((np.zeros(1), key[0:8], np.zeros(7))).astype(int)
 print(local_key_padded)
 amp_key_T3 = permutate(local_seed, local_key_padded)
+
+print()
+print(amp_key_T1)
+print(amp_key_T2)
+print(amp_key_T3)
+print(amp_key_T4)
+print()
+print(np.hstack((amp_key_T1^amp_key_T2, amp_key_T3^amp_key_T4)).astype(int))
+print()
 
 exit(1)
 
