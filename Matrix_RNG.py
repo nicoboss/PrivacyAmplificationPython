@@ -2,7 +2,7 @@ from random import *
 import numpy as np
 import sys
 
-n = 4
+n = 6
 potenz = 2**n
 vsize = potenz//4+potenz//8#randint(1, potenz/2-1)
 hsize = potenz-vsize
