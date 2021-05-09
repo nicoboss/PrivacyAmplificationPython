@@ -54,7 +54,7 @@ start = time.time()
 
 #toeplitz_seed = np.hstack((vertical, horizontal)).astype(int)
 sample_size = 1024
-chunk_size = 8
+chunk_size = 16
 vertical_len = sample_size // 4 + sample_size // 8
 horizontal_len = sample_size // 2 + sample_size // 8
 vertical_chunks = vertical_len//chunk_size
@@ -89,7 +89,7 @@ for columnNr in range(horizontal_chunks-1, -1, -1):
         print(keyNr)
         local_seed = np.hstack((toeplitz_seed[r+chunk_size:r+2*chunk_size], toeplitz_seed[r:r+chunk_size])).astype(int)
         print(local_seed)
-        local_key_padded = np.hstack((np.zeros(1), key[keyNr*chunk_size:keyNr*chunk_size+chunk_size], np.zeros(7))).astype(int)
+        local_key_padded = np.hstack((np.zeros(1), key[keyNr*chunk_size:keyNr*chunk_size+chunk_size], np.zeros(chunk_size-1))).astype(int)
         print(local_key_padded)
         amp_out = permutate(local_seed, local_key_padded)
         amp_out_arr[currentRowNr] ^= amp_out
@@ -104,7 +104,7 @@ for rowNr in range(1, vertical_chunks, 1):
         print(keyNr)
         local_seed = np.hstack((toeplitz_seed[r+chunk_size:r+2*chunk_size], toeplitz_seed[r:r+chunk_size])).astype(int)
         print(local_seed)
-        local_key_padded = np.hstack((np.zeros(1), key[keyNr*chunk_size:keyNr*chunk_size+chunk_size], np.zeros(7))).astype(int)
+        local_key_padded = np.hstack((np.zeros(1), key[keyNr*chunk_size:keyNr*chunk_size+chunk_size], np.zeros(chunk_size-1))).astype(int)
         print(local_key_padded)
         amp_out = permutate(local_seed, local_key_padded)
         amp_out_arr[currentRowNr] ^= amp_out
