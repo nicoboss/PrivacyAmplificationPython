@@ -25,14 +25,14 @@ from scipy.sparse import csc_matrix
 np.set_printoptions(threshold=np.inf)
 
 def permutate(toeplitz_seed, key_start):
-	print("toeplitz_seed:\n", toeplitz_seed)
-	print("key_start:\n", key_start)
-	print("fft(toeplitz_seed):\n", np.fft.fft(toeplitz_seed))
-	print("fft(key_start):\n", np.fft.fft(key_start))
-	print("fft(toeplitz_seed)*fft(key_start):\n", np.fft.fft(toeplitz_seed) * np.fft.fft(key_start))
-	print("np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)):\n", np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)))
+	#print("toeplitz_seed:\n", toeplitz_seed)
+	#print("key_start:\n", key_start)
+	#print("fft(toeplitz_seed):\n", np.fft.fft(toeplitz_seed))
+	#print("fft(key_start):\n", np.fft.fft(key_start))
+	#print("fft(toeplitz_seed)*fft(key_start):\n", np.fft.fft(toeplitz_seed) * np.fft.fft(key_start))
+	#print("np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)):\n", np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)))
 	permutated_key = np.around(np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)).real).astype(int) % 2
-	print("permutated_key_raw:\n", permutated_key)
+	#print("permutated_key_raw:\n", permutated_key)
 	return permutated_key[:8]
 		
 start = time.time()
@@ -75,6 +75,8 @@ for columnNr in range(horizontal_len//chunk_size-1, -1, -1):
         print(local_seed)
         local_key_padded = np.hstack((np.zeros(1), key[keyNr*chunk_size:keyNr*chunk_size+chunk_size], np.zeros(7))).astype(int)
         print(local_key_padded)
+        amp_out = permutate(local_seed, local_key_padded)
+        print(amp_out)
         currentRowNr += 1
     r += chunk_size
     rNr += 1
@@ -87,11 +89,14 @@ for rowNr in range(1, verticalChunks, 1):
         print(local_seed)
         local_key_padded = np.hstack((np.zeros(1), key[keyNr*chunk_size:keyNr*chunk_size+chunk_size], np.zeros(7))).astype(int)
         print(local_key_padded)
+        amp_out = permutate(local_seed, local_key_padded)
+        print(amp_out)
         currentRowNr += 1
     r += chunk_size
     rNr += 1
 print()
 print()
+exit(0)
 
     
 local_seed = np.hstack((toeplitz_seed[8:16], toeplitz_seed[0:8])).astype(int)
