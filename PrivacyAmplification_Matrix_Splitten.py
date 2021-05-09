@@ -63,7 +63,7 @@ print(amp_out_arr)
 
 toeplitz_seed = np.array([1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0]) # HL + VL + 0
 toeplitz_seed_length = len(toeplitz_seed)
-key = np.array([1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1])
+key = np.array([1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1]) #32
 key_length = horizontal_len
 
 verticalChunks = vertical_len//chunk_size
@@ -101,7 +101,11 @@ for rowNr in range(1, verticalChunks, 1):
     rNr += 1
 print()
 print(amp_out_arr)
+for i in range(verticalChunks):
+    amp_out_arr[i] ^= key[len(key)-horizontal_len+i*chunk_size:len(key)-horizontal_len+i*chunk_size+chunk_size]
 print()
+print(amp_out_arr)
+
 exit(0)
 
     
