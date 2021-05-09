@@ -33,7 +33,7 @@ def permutate(toeplitz_seed, key_start):
 	#print("np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)):\n", np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)))
 	permutated_key = np.around(np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)).real).astype(int) % 2
 	#print("permutated_key_raw:\n", permutated_key)
-	return permutated_key[:8]
+	return permutated_key[:chunk_size]
 		
 start = time.time()
 
@@ -57,6 +57,9 @@ sample_size = 32
 chunk_size = 8
 vertical_len = 16 #sample_size // 4 + sample_size // 8
 horizontal_len = 16 #sample_size // 2 + sample_size // 8
+vertical_chunks = horizontal_len//chunk_size
+amp_out_arr = np.zeros((vertical_chunks, chunk_size), dtype=int)
+print(amp_out_arr)
 
 toeplitz_seed = np.array([1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0]) # HL + VL + 0
 toeplitz_seed_length = len(toeplitz_seed)
@@ -66,16 +69,17 @@ key_length = horizontal_len
 verticalChunks = vertical_len//chunk_size
 rNr = 0
 r = 0
-for columnNr in range(horizontal_len//chunk_size-1, -1, -1):
+for columnNr in range(vertical_chunks-1, -1, -1):
     print("columnNr:", columnNr)
     currentRowNr = 0
-    for keyNr in range(columnNr, columnNr+min((horizontal_len//chunk_size-1)-columnNr+1, verticalChunks), 1):
+    for keyNr in range(columnNr, columnNr+min((vertical_chunks-1)-columnNr+1, verticalChunks), 1):
         print(keyNr)
         local_seed = np.hstack((toeplitz_seed[r+chunk_size:r+2*chunk_size], toeplitz_seed[r:r+chunk_size])).astype(int)
         print(local_seed)
         local_key_padded = np.hstack((np.zeros(1), key[keyNr*chunk_size:keyNr*chunk_size+chunk_size], np.zeros(7))).astype(int)
         print(local_key_padded)
         amp_out = permutate(local_seed, local_key_padded)
+        amp_out_arr[currentRowNr] ^= amp_out
         print(amp_out)
         currentRowNr += 1
     r += chunk_size
@@ -90,11 +94,13 @@ for rowNr in range(1, verticalChunks, 1):
         local_key_padded = np.hstack((np.zeros(1), key[keyNr*chunk_size:keyNr*chunk_size+chunk_size], np.zeros(7))).astype(int)
         print(local_key_padded)
         amp_out = permutate(local_seed, local_key_padded)
+        amp_out_arr[currentRowNr] ^= amp_out
         print(amp_out)
         currentRowNr += 1
     r += chunk_size
     rNr += 1
 print()
+print(amp_out_arr)
 print()
 exit(0)
 
