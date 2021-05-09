@@ -53,10 +53,10 @@ start = time.time()
 
 
 #toeplitz_seed = np.hstack((vertical, horizontal)).astype(int)
-sample_size = 128
+sample_size = 32
 chunk_size = 8
-vertical_len = sample_size // 4 + sample_size // 8
-horizontal_len = sample_size // 2 + sample_size // 8
+vertical_len = 16 #sample_size // 4 + sample_size // 8
+horizontal_len = 16 #sample_size // 2 + sample_size // 8
 
 toeplitz_seed = np.array([1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0]) # HL + VL + 0
 toeplitz_seed_length = len(toeplitz_seed)
@@ -65,17 +65,27 @@ key_length = horizontal_len
 
 verticalChunks = vertical_len//chunk_size
 rNr = 0
-for columnNr in range(horizontal_len//8-1, -1, -1):
+r = 0
+for columnNr in range(horizontal_len//chunk_size-1, -1, -1):
     print("columnNr:", columnNr)
-    for keyNr in range(columnNr, columnNr+min((horizontal_len//8-1)-columnNr+1, verticalChunks), 1):
+    for keyNr in range(columnNr, columnNr+min((horizontal_len//chunk_size-1)-columnNr+1, verticalChunks), 1):
         print(keyNr)
-        rNr += 1
+        local_seed = np.hstack((toeplitz_seed[r+chunk_size:r+2*chunk_size], toeplitz_seed[r:r+chunk_size])).astype(int)
+        print(local_seed)
+    r += chunk_size
+    rNr += 1
 for rowNr in range(1, verticalChunks, 1):
     print("rowNr:", rowNr)
-    for keyNr in range(0, min(horizontal_len//8, (verticalChunks-rowNr)), 1):
+    for keyNr in range(0, min(horizontal_len//chunk_size, (verticalChunks-rowNr)), 1):
         print(keyNr)
-        rNr += 1
+        local_seed = np.hstack((toeplitz_seed[r+chunk_size:r+2*chunk_size], toeplitz_seed[r:r+chunk_size])).astype(int)
+        print(local_seed)
+    r += chunk_size
+    rNr += 1
+print()
+print()
 
+    
 local_seed = np.hstack((toeplitz_seed[8:16], toeplitz_seed[0:8])).astype(int)
 print(local_seed)
 local_key_padded = np.hstack((np.zeros(1), key[key_length-8:key_length], np.zeros(7))).astype(int)
