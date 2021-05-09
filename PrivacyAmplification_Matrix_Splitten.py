@@ -53,22 +53,26 @@ start = time.time()
 
 
 #toeplitz_seed = np.hstack((vertical, horizontal)).astype(int)
-horizontal_len = 16
+sample_size = 128
+chunk_size = 8
+vertical_len = sample_size // 4 + sample_size // 8
+horizontal_len = sample_size // 2 + sample_size // 8
+
 toeplitz_seed = np.array([1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0]) # HL + VL + 0
 toeplitz_seed_length = len(toeplitz_seed)
 key = np.array([1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 1])
 key_length = horizontal_len
 
-verticalBlocks = 2
+verticalChunks = vertical_len//chunk_size
 rNr = 0
 for columnNr in range(horizontal_len//8-1, -1, -1):
     print("columnNr:", columnNr)
-    for keyNr in range(columnNr, columnNr+min((horizontal_len//8-1)-columnNr+1, verticalBlocks), 1):
+    for keyNr in range(columnNr, columnNr+min((horizontal_len//8-1)-columnNr+1, verticalChunks), 1):
         print(keyNr)
         rNr += 1
-for rowNr in range(1, verticalBlocks, 1):
+for rowNr in range(1, verticalChunks, 1):
     print("rowNr:", rowNr)
-    for keyNr in range(rowNr, min(horizontal_len//8+1, verticalBlocks-rowNr+1), 1):
+    for keyNr in range(0, min(horizontal_len//8, (verticalChunks-rowNr)), 1):
         print(keyNr)
         rNr += 1
 
