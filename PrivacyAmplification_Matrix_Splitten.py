@@ -68,18 +68,26 @@ rNr = 0
 r = 0
 for columnNr in range(horizontal_len//chunk_size-1, -1, -1):
     print("columnNr:", columnNr)
+    currentRowNr = 0
     for keyNr in range(columnNr, columnNr+min((horizontal_len//chunk_size-1)-columnNr+1, verticalChunks), 1):
         print(keyNr)
         local_seed = np.hstack((toeplitz_seed[r+chunk_size:r+2*chunk_size], toeplitz_seed[r:r+chunk_size])).astype(int)
         print(local_seed)
+        local_key_padded = np.hstack((np.zeros(1), key[keyNr*chunk_size:keyNr*chunk_size+chunk_size], np.zeros(7))).astype(int)
+        print(local_key_padded)
+        currentRowNr += 1
     r += chunk_size
     rNr += 1
 for rowNr in range(1, verticalChunks, 1):
     print("rowNr:", rowNr)
+    currentRowNr = rowNr
     for keyNr in range(0, min(horizontal_len//chunk_size, (verticalChunks-rowNr)), 1):
         print(keyNr)
         local_seed = np.hstack((toeplitz_seed[r+chunk_size:r+2*chunk_size], toeplitz_seed[r:r+chunk_size])).astype(int)
         print(local_seed)
+        local_key_padded = np.hstack((np.zeros(1), key[keyNr*chunk_size:keyNr*chunk_size+chunk_size], np.zeros(7))).astype(int)
+        print(local_key_padded)
+        currentRowNr += 1
     r += chunk_size
     rNr += 1
 print()
