@@ -54,7 +54,7 @@ start = time.time()
 
 #toeplitz_seed = np.hstack((vertical, horizontal)).astype(int)
 sample_size = 2**14
-chunk_size = 2**10
+chunk_size = 2**11
 if (sample_size//8 < chunk_size):
     raise SystemExit('Fatal error: sample_size/8 < chunk_size')
 vertical_len = sample_size // 4 + sample_size // 8
