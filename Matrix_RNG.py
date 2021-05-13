@@ -2,11 +2,11 @@ from random import *
 import numpy as np
 import sys
 
-n = 10
+n = 14
 potenz = 2**n
 vsize = potenz//4+potenz//8#randint(1, potenz/2-1)
 hsize = potenz-vsize-1
-ksize = potenz+1
+ksize = potenz
 np.set_printoptions(threshold=sys.maxsize, suppress=True, linewidth=sys.maxsize)
 print(hsize, "x", vsize)
 print("vertical = np." + repr(np.random.randint(0, 2, vsize)))
