@@ -25,8 +25,8 @@ from scipy.sparse import csc_matrix
 np.set_printoptions(threshold=np.inf)
 
 def permutate(toeplitz_seed, key_start):
-	#print("toeplitz_seed:\n", toeplitz_seed)
-	#print("key_start:\n", key_start)
+	print("toeplitz_seed:\n", toeplitz_seed)
+	print("key_start:\n", key_start)
 	#print("fft(toeplitz_seed):\n", np.fft.fft(toeplitz_seed))
 	#print("fft(key_start):\n", np.fft.fft(key_start))
 	#print("fft(toeplitz_seed)*fft(key_start):\n", np.fft.fft(toeplitz_seed) * np.fft.fft(key_start))
@@ -34,8 +34,10 @@ def permutate(toeplitz_seed, key_start):
 	print("len(toeplitz_seed):", len(toeplitz_seed))
 	print("len(key_start):", len(key_start))
 	permutated_key = np.around(np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)).real).astype(int) % 2
-	#print("permutated_key_raw:\n", permutated_key)
+	print("permutated_key_raw:\n", permutated_key)
+	input()
 	return permutated_key[:chunk_size]
+
 		
 start = time.time()
 
