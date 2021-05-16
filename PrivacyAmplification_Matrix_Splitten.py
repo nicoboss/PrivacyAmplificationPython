@@ -36,7 +36,7 @@ def permutate(toeplitz_seed, key_start):
 	permutated_key = np.around(np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)).real).astype(int) % 2
 	print("permutated_key_raw:\n", permutated_key)
 	input()
-	return permutated_key[:chunk_size]
+	return permutated_key[:chunk_side]
 
 		
 start = time.time()
@@ -59,13 +59,14 @@ start = time.time()
 #toeplitz_seed = np.hstack((vertical, horizontal)).astype(int)
 sample_size = 2**14
 chunk_size = 2**11
-if (sample_size//8 < chunk_size):
-    raise SystemExit('Fatal error: sample_size/8 < chunk_size')
+chunk_side = chunk_size//2
+if (sample_size//8 < chunk_side):
+    raise SystemExit('Fatal error: sample_size/8 < chunk_side')
 vertical_len = sample_size // 4 + sample_size // 8
 horizontal_len = sample_size // 2 + sample_size // 8
-vertical_chunks = vertical_len//chunk_size
-horizontal_chunks = horizontal_len//chunk_size
-amp_out_arr = np.zeros((vertical_chunks, chunk_size), dtype=int)
+vertical_chunks = vertical_len//chunk_side
+horizontal_chunks = horizontal_len//chunk_side
+amp_out_arr = np.zeros((vertical_chunks, chunk_side), dtype=int)
 #print(amp_out_arr)
 
 #toeplitz_seed = np.array([1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0]) # HL + VL + 0
@@ -95,36 +96,36 @@ for columnNr in range(horizontal_chunks-1, -1, -1):
     currentRowNr = 0
     for keyNr in range(columnNr, columnNr+min((horizontal_chunks-1)-columnNr+1, vertical_chunks), 1):
         print(currentRowNr, keyNr)
-        local_seed = np.hstack((toeplitz_seed[r+chunk_size:r+2*chunk_size], toeplitz_seed[r:r+chunk_size])).astype(int)
+        local_seed = np.hstack((toeplitz_seed[r+chunk_side:r+2*chunk_side], toeplitz_seed[r:r+chunk_side])).astype(int)
         #print(local_seed)
-        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:", keyNr*chunk_size)
-        local_key_padded = np.hstack((np.zeros(1), key[keyNr*chunk_size:keyNr*chunk_size+chunk_size], np.zeros(chunk_size-1))).astype(int)
+        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:", keyNr*chunk_side)
+        local_key_padded = np.hstack((np.zeros(1), key[keyNr*chunk_side:keyNr*chunk_side+chunk_side], np.zeros(chunk_side-1))).astype(int)
         #print(local_key_padded)
         amp_out = permutate(local_seed, local_key_padded)
         amp_out_arr[currentRowNr] ^= amp_out
         #print(amp_out)
         currentRowNr += 1
-    r += chunk_size
+    r += chunk_side
     rNr += 1
 for rowNr in range(1, vertical_chunks, 1):
     #print("rowNr:", rowNr)
     currentRowNr = rowNr
-    for keyNr in range(0, min(horizontal_len//chunk_size, (vertical_chunks-rowNr)), 1):
+    for keyNr in range(0, min(horizontal_len//chunk_side, (vertical_chunks-rowNr)), 1):
         print(currentRowNr, keyNr)
-        local_seed = np.hstack((toeplitz_seed[r+chunk_size:r+2*chunk_size], toeplitz_seed[r:r+chunk_size])).astype(int)
+        local_seed = np.hstack((toeplitz_seed[r+chunk_side:r+2*chunk_side], toeplitz_seed[r:r+chunk_side])).astype(int)
         #print(local_seed)
-        local_key_padded = np.hstack((np.zeros(1), key[keyNr*chunk_size:keyNr*chunk_size+chunk_size], np.zeros(chunk_size-1))).astype(int)
+        local_key_padded = np.hstack((np.zeros(1), key[keyNr*chunk_side:keyNr*chunk_side+chunk_side], np.zeros(chunk_side-1))).astype(int)
         #print(local_key_padded)
         amp_out = permutate(local_seed, local_key_padded)
         amp_out_arr[currentRowNr] ^= amp_out
         #print(amp_out)
         currentRowNr += 1
-    r += chunk_size
+    r += chunk_side
     rNr += 1
 print()
 print(amp_out_arr)
 for i in range(vertical_chunks):
-    key_rest_start_pos = horizontal_len+i*chunk_size
-    amp_out_arr[i] ^= key[key_rest_start_pos:key_rest_start_pos+chunk_size]
+    key_rest_start_pos = horizontal_len+i*chunk_side
+    amp_out_arr[i] ^= key[key_rest_start_pos:key_rest_start_pos+chunk_side]
 print()
 print(amp_out_arr)
