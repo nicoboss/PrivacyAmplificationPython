@@ -25,8 +25,8 @@ from scipy.sparse import csc_matrix
 np.set_printoptions(threshold=np.inf)
 
 def permutate(toeplitz_seed, key_start):
-	print("toeplitz_seed:\n", toeplitz_seed)
-	print("key_start:\n", key_start)
+	#print("toeplitz_seed:\n", toeplitz_seed)
+	#print("key_start:\n", key_start)
 	#print("fft(toeplitz_seed):\n", np.fft.fft(toeplitz_seed))
 	#print("fft(key_start):\n", np.fft.fft(key_start))
 	#print("fft(toeplitz_seed)*fft(key_start):\n", np.fft.fft(toeplitz_seed) * np.fft.fft(key_start))
@@ -34,7 +34,7 @@ def permutate(toeplitz_seed, key_start):
 	#print("len(toeplitz_seed):", len(toeplitz_seed))
 	#print("len(key_start):", len(key_start))
 	permutated_key = np.around(np.fft.ifft(np.fft.fft(toeplitz_seed) * np.fft.fft(key_start)).real).astype(int) % 2
-	print("permutated_key_raw:\n", permutated_key)
+	print("permutated_key_raw:\n", permutated_key[:16])
 	input()
 	return permutated_key[:chunk_side]
 
@@ -98,7 +98,6 @@ for columnNr in range(horizontal_chunks-1, -1, -1):
         print(currentRowNr, keyNr)
         local_seed = np.hstack((toeplitz_seed[r+chunk_side:r+2*chunk_side], toeplitz_seed[r:r+chunk_side])).astype(int)
         #print(local_seed)
-        print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA:", keyNr*chunk_side)
         local_key_padded = np.hstack((np.zeros(1), key[keyNr*chunk_side:keyNr*chunk_side+chunk_side], np.zeros(chunk_side-1))).astype(int)
         #print(local_key_padded)
         amp_out = permutate(local_seed, local_key_padded)
@@ -123,9 +122,11 @@ for rowNr in range(1, vertical_chunks, 1):
     r += chunk_side
     rNr += 1
 print()
-print(amp_out_arr)
+print("Raw:", amp_out_arr)
+print()
 for i in range(vertical_chunks):
     key_rest_start_pos = horizontal_len+i*chunk_side
     amp_out_arr[i] ^= key[key_rest_start_pos:key_rest_start_pos+chunk_side]
+    print("Rest:", key[key_rest_start_pos:key_rest_start_pos+chunk_side])
 print()
-print(amp_out_arr)
+print("Result:", amp_out_arr)
